@@ -5,7 +5,12 @@ export default defineConfig({
   plugins: [react()],
   build: {
     rollupOptions: {
-      external: ['react-router-dom'],
+      external: [
+        'react-router-dom',
+        '@mui/material',
+        '@emotion/react',
+        '@emotion/styled',
+      ],
     },
   },
 });
