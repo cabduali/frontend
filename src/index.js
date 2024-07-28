@@ -5,7 +5,7 @@ const initialState = {
   user: null,
   token: null,
   posts: [],
-  friends:[],
+  friends: [], // Default to empty array
 };
 
 export const authSlice = createSlice({
@@ -25,9 +25,9 @@ export const authSlice = createSlice({
     },
     setFriends: (state, action) => {
       if (state.user) {
-        state.user.friends = action.payload.friends;
+        state.user.friends = action.payload.friends || []; // Default to empty array if undefined
       } else {
-        console.error("user friends non-existent :(");
+        console.error("User is not defined");
       }
     },
     setPosts: (state, action) => {
