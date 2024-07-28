@@ -2,7 +2,7 @@ import { PersonAddOutlined, PersonRemoveOutlined } from "@mui/icons-material";
 import { Box, IconButton, Typography, useTheme } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { setFriends } from "../index";
+import { setFriends } from "../redux/authSlice";  // Ensure this path is correct
 import FlexBetween from "./FlexBetween";
 import UserImage from "./UserImage";
 
@@ -23,18 +23,27 @@ const Friend = ({ friendId, name, subtitle, userPicturePath }) => {
   const isFriend = Array.isArray(friends) && friends.find((friend) => friend._id === friendId);
 
   const patchFriend = async () => {
-    const response = await fetch(
-      `https://backend-project-yye9.onrender.com/users/${_id}/${friendId}`,
-      {
-        method: "PATCH",
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
-        },
+    try {
+      const response = await fetch(
+        `https://backend-project-yye9.onrender.com/users/${_id}/${friendId}`,
+        {
+          method: "PATCH",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error("Failed to update friend status");
       }
-    );
-    const data = await response.json();
-    dispatch(setFriends({ friends: data }));
+
+      const data = await response.json();
+      dispatch(setFriends({ friends: data }));
+    } catch (error) {
+      console.error('Error updating friend:', error);
+    }
   };
 
   return (
@@ -42,10 +51,7 @@ const Friend = ({ friendId, name, subtitle, userPicturePath }) => {
       <FlexBetween gap="1rem">
         <UserImage image={userPicturePath} size="55px" />
         <Box
-          onClick={() => {
-            navigate(`/profile/${friendId}`);
-            navigate(0);
-          }}
+          onClick={() => navigate(`/profile/${friendId}`)}
         >
           <Typography
             color={main}
@@ -66,7 +72,7 @@ const Friend = ({ friendId, name, subtitle, userPicturePath }) => {
         </Box>
       </FlexBetween>
       <IconButton
-        onClick={() => patchFriend()}
+        onClick={patchFriend}
         sx={{ backgroundColor: primaryLight, p: "0.6rem" }}
       >
         {isFriend ? (
@@ -80,3 +86,4 @@ const Friend = ({ friendId, name, subtitle, userPicturePath }) => {
 };
 
 export default Friend;
+ 
