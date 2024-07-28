@@ -15,6 +15,7 @@ const ProfilePage = () => {
   const isNonMobileScreens = useMediaQuery("(min-width:1000px)");
 
   const getUser = async () => {
+    console.log("Token:", token); // Debugging line
     const response = await fetch(`https://backend-project-yye9.onrender.com/users/${userId}`, {
       method: "GET",
       headers: { Authorization: `Bearer ${token}` },
