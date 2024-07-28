@@ -3,7 +3,7 @@ import Friend from "../../components/Friend";
 import WidgetWrapper from "../../components/WidgetWrapper";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { setFriends } from "../../redux/authSlice";  // Ensure this path is correct
+import { setFriends } from "../../index";
 
 const FriendListWidget = ({ userId }) => {
   const dispatch = useDispatch();
@@ -12,31 +12,20 @@ const FriendListWidget = ({ userId }) => {
   const friends = useSelector((state) => state.user.friends);
 
   const getFriends = async () => {
-    try {
-      const response = await fetch(
-        `https://backend-project-yye9.onrender.com/users/${userId}/friends`,
-        {
-          method: "GET",
-          headers: { Authorization: `Bearer ${token}` },
-        }
-      );
-
-      if (!response.ok) {
-        throw new Error('Failed to fetch friends');
+    const response = await fetch(
+      `https://backend-project-yye9.onrender.com/users/${userId}/friends`,
+      {
+        method: "GET",
+        headers: { Authorization: `Bearer ${token}` },
       }
-
-      const data = await response.json();
-      dispatch(setFriends({ friends: data }));
-    } catch (error) {
-      console.error('Error fetching friends:', error);
-    }
+    );
+    const data = await response.json();
+    dispatch(setFriends({ friends: data }));
   };
 
   useEffect(() => {
-    if (userId) {
-      getFriends();
-    }
-  }, [userId]); // Dependency on userId
+    getFriends();
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <WidgetWrapper>
@@ -49,21 +38,15 @@ const FriendListWidget = ({ userId }) => {
         Friend List
       </Typography>
       <Box display="flex" flexDirection="column" gap="1.5rem">
-        {friends && friends.length > 0 ? (
-          friends.map((friend) => (
-            <Friend
-              key={friend._id}
-              friendId={friend._id}
-              name={`${friend.firstName} ${friend.lastName}`}
-              subtitle={friend.occupation}
-              userPicturePath={friend.picturePath}
-            />
-          ))
-        ) : (
-          <Typography color={palette.neutral.medium} variant="body2">
-            No friends found
-          </Typography>
-        )}
+        {friends.map((friend) => (
+          <Friend
+            key={friend._id}
+            friendId={friend._id}
+            name={`${friend.firstName} ${friend.lastName}`}
+            subtitle={friend.occupation}
+            userPicturePath={friend.picturePath}
+          />
+        ))}
       </Box>
     </WidgetWrapper>
   );

@@ -10,37 +10,24 @@ import UserWidget from "../pages/widgets/UserWidget";
 
 const ProfilePage = () => {
   const [user, setUser] = useState(null);
-  const [error, setError] = useState(null);
   const { userId } = useParams();
   const token = useSelector((state) => state.token);
   const isNonMobileScreens = useMediaQuery("(min-width:1000px)");
 
   const getUser = async () => {
-    try {
-      console.log(`Fetching user with ID: ${userId}`); // Debugging line
-      const response = await fetch(`https://backend-project-yye9.onrender.com/users/${userId}`, {
-        method: "GET",
-        headers: { Authorization: `Bearer ${token}` },
-      });
-
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-
-      const data = await response.json();
-      setUser(data);
-    } catch (error) {
-      console.error("Error fetching user data:", error);
-      setError(error.message);
-    }
+    const response = await fetch(`https://backend-project-yye9.onrender.com/users/${userId}`, {
+      method: "GET",
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    const data = await response.json();
+    setUser(data);
   };
 
   useEffect(() => {
     getUser();
-  }, [userId, token]); // Add userId and token to dependencies
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
-  if (error) return <div>Error: {error}</div>;
-  if (!user) return <div>Loading...</div>;
+  if (!user) return null;
 
   return (
     <Box>
