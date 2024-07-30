@@ -63,7 +63,7 @@ const Form = () => {
     formData.append("picturePath", values.picture.name);
 
     const savedUserResponse = await fetch(
-      "http://localhost:3001/auth/register",
+      "https://backend-project-yye9.onrender.com/auth/register",
       {
         method: "POST",
         body: formData,
