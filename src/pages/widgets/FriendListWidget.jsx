@@ -14,7 +14,7 @@ const FriendListWidget = ({ userId }) => {
   const getFriends = async () => {
     try {
       const response = await fetch(
-        `https://back-end-sooty-nine.vercel.app/users/${userId}/friends`,
+        `https://backend-social-2kgw.onrender.com/users/${userId}/friends`,
         {
           method: "GET",
           headers: { Authorization: `Bearer ${token}` },

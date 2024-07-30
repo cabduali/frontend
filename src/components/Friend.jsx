@@ -24,7 +24,7 @@ const Friend = ({ friendId, name, subtitle, userPicturePath }) => {
 
   const patchFriend = async () => {
     const response = await fetch(
-      `https://back-end-sooty-nine.vercel.app/users/${_id}/${friendId}`,
+      `https://backend-social-2kgw.onrender.com/users/${_id}/${friendId}`,
       {
         method: "PATCH",
         headers: {

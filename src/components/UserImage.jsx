@@ -8,7 +8,7 @@ const UserImage = ({ image, size = "60px" }) => {
         width={size}
         height={size}
         alt="user"
-        src={`https://back-end-sooty-nine.vercel.app/assets/${image}`}
+        src={`https://backend-social-2kgw.onrender.com/assets/${image}`}
       />
     </Box>
   );
